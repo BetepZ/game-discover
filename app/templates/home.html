@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% from "_macros.html" import card %}
+{% block title %}Home - Game Discover{% endblock %}
+{% block content %}
+
+{% if page == 1 and not q and not tag and recommended %}
+<h4 class="section-title mb-3">Recommended for You</h4>
+<div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3 mb-5">
+  {% for g in recommended %}{{ card(g, owned_ids) }}{% endfor %}
+</div>
+{% endif %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <h4 class="section-title mb-0">Katalog Game <small class="text-body-secondary fs-6">({{ total }} game)</small></h4>
+  <form class="d-flex gap-2" method="get" action="/">
+    <input type="text" name="q" value="{{ q }}" class="form-control form-control-sm" placeholder="Cari judul...">
+    <select name="tag" class="form-select form-select-sm">
+      <option value="">Semua genre</option>
+      {% for g in genres %}<option value="{{ g }}" {{ 'selected' if g == tag }}>{{ g }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-primary btn-sm">Cari</button>
+    {% if q or tag %}<a href="/" class="btn btn-outline-secondary btn-sm">Reset</a>{% endif %}
+  </form>
+</div>
+
+{% if games %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-3">
+  {% for g in games %}{{ card(g, owned_ids, True) }}{% endfor %}
+</div>
+{% else %}
+<div class="alert alert-secondary">Tidak ada game yang cocok.</div>
+{% endif %}
+
+{% if pages > 1 %}
+<nav class="mt-4 d-flex justify-content-center align-items-center gap-3">
+  {% if page > 1 %}
+  <a class="btn btn-outline-secondary btn-sm" href="/?q={{ q|urlencode }}&tag={{ tag|urlencode }}&page={{ page - 1 }}">&laquo; Sebelumnya</a>
+  {% endif %}
+  <span class="small">Halaman {{ page }} / {{ pages }}</span>
+  {% if page < pages %}
+  <a class="btn btn-outline-secondary btn-sm" href="/?q={{ q|urlencode }}&tag={{ tag|urlencode }}&page={{ page + 1 }}">Berikutnya &raquo;</a>
+  {% endif %}
+</nav>
+{% endif %}
+{% endblock %}

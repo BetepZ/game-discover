@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_macros.html" import card %}
+{% block title %}{{ game.title }} - Game Discover{% endblock %}
+{% block content %}
+<a href="/" class="text-decoration-none small">&laquo; Kembali ke katalog</a>
+<div class="row g-4 mt-1">
+  <div class="col-md-7">
+    <img class="hero-img" src="{{ game.image_url }}" alt="{{ game.title }}"
+         onerror="this.onerror=null;this.src='/static/img/placeholder.svg'">
+  </div>
+  <div class="col-md-5">
+    <h2>{{ game.title }}</h2>
+    <div class="mb-3">
+      {% for t in game.tag_list %}<span class="badge text-bg-info me-1">{{ t }}</span>{% endfor %}
+    </div>
+    <table class="table table-sm table-borderless mb-3">
+      <tr><td class="text-body-secondary">Rilis</td><td>{{ game.release_date or "-" }}</td></tr>
+      <tr><td class="text-body-secondary">Harga</td><td>{{ "Free" if not game.price else "$%.2f"|format(game.price) }}</td></tr>
+      <tr><td class="text-body-secondary">Ulasan positif</td>
+          <td>{{ (game.positive_ratio ~ "%") if game.positive_ratio is not none else "-" }}</td></tr>
+      {% if my_rating %}<tr><td class="text-body-secondary">Rating kamu</td><td>{{ my_rating }}/5 ★</td></tr>{% endif %}
+    </table>
+    {% if in_library %}
+      <a href="/library" class="btn btn-success btn-lg">✓ In Library</a>
+    {% else %}
+      <button class="btn btn-primary btn-lg" data-add="{{ game.game_id }}">+ Add to Library</button>
+    {% endif %}
+  </div>
+</div>
+
+<div class="mt-4">
+  <h5>Deskripsi</h5>
+  <p class="text-body-secondary">{{ game.description or "Tidak ada deskripsi." }}</p>
+</div>
+
+{% if similar %}
+<h4 class="section-title mt-5 mb-3">Game Serupa</h4>
+<div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3">
+  {% for g in similar %}{{ card(g) }}{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

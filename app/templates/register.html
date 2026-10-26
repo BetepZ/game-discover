@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Daftar - Game Discover{% endblock %}
+{% block content %}
+<div class="card auth-card">
+  <div class="card-body p-4">
+    <h3 class="mb-1">Buat Akun</h3>
+    <p class="text-body-secondary">Setelah daftar, pilih genre favoritmu.</p>
+    {% if error %}<div class="alert alert-danger py-2">{{ error }}</div>{% endif %}
+    <form method="post" action="/register">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" minlength="3" maxlength="30"
+               pattern="[A-Za-z0-9_]+" required autofocus>
+        <div class="form-text">3-30 karakter: huruf, angka, underscore.</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" minlength="6" required>
+        <div class="form-text">Minimal 6 karakter.</div>
+      </div>
+      <button class="btn btn-primary w-100">Daftar</button>
+    </form>
+    <p class="mt-3 mb-0 small">Sudah punya akun? <a href="/login">Login</a></p>
+  </div>
+</div>
+{% endblock %}

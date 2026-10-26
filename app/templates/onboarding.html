@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Pilih Genre - Game Discover{% endblock %}
+{% block content %}
+<div class="mx-auto" style="max-width: 760px;">
+  <h3>Pilih genre favoritmu</h3>
+  <p class="text-body-secondary">Pilih 3-5 genre untuk rekomendasi awal. Terpilih: <strong id="genre-count">0</strong>/5</p>
+  {% if error %}<div class="alert alert-danger py-2">{{ error }}</div>{% endif %}
+  <form method="post" action="/onboarding">
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      {% for g in genres %}
+      <input type="checkbox" class="btn-check" name="genres" value="{{ g }}" id="g{{ loop.index }}"
+             {{ 'checked' if g in selected }}>
+      <label class="btn btn-outline-info" for="g{{ loop.index }}">{{ g }}</label>
+      {% endfor %}
+    </div>
+    <button class="btn btn-primary">Simpan &amp; Lanjut</button>
+  </form>
+</div>
+{% endblock %}
